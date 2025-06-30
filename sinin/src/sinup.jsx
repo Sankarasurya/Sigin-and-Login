@@ -5,7 +5,8 @@ export default function Signup() {
     const [formData, setFormData] = useState({
         name: '',
         username: '',
-        password: ''
+        password: '',
+        role:''
     });
 
     const handleChange = (e) => {
@@ -18,6 +19,7 @@ export default function Signup() {
         console.log(formData);
         axios.post('http://localhost:3000/register',formData)
         .then(res=>{
+            console.log(res)
             if(res.data.status==='Success'){
                 navigate('/login')
                 alert("sigin succesfully completed")
@@ -94,6 +96,26 @@ export default function Signup() {
                             }}
                         />
                     </div>
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>Role:</label>
+                                <select
+                                    name="role"
+                                    value={formData.role}
+                                    onChange={handleChange}
+                                    required
+                                    style={{
+                                    width: '100%',
+                                    padding: '8px',
+                                    borderRadius: '5px',
+                                    border: '1px solid #ccc'
+                            }}
+                        >
+                        <option >-- Select Username --</option>
+                        <option value="admin" >admin</option>
+                        <option value="worker">worker</option>
+                        </select>
+                        </div>
+
                     <button type="submit" style={{
                         width: '100%',
                         padding: '10px',

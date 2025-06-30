@@ -7,7 +7,9 @@ import Login from './login'
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import Home from './home'
 import Welcome from './Welcome'
-
+import Owner from './Owner'
+import Worker from './Worker'
+import ProtectedRoute from './ProtectedRoute'
 
 function App() {
   return (
@@ -19,6 +21,18 @@ function App() {
               <Route path='/login' element={<Login/>}/>
               <Route path='/register' element={<Sinup/>}/>
               <Route path='/welcome' element={<Welcome/>}/>
+              <Route path="/owner" element={
+              <ProtectedRoute allowedRole="admin">
+                <Owner/>
+              </ProtectedRoute>
+              }/>
+              <Route path="/worker" element={
+              <ProtectedRoute allowedRole="worker">
+                <Worker/>
+              </ProtectedRoute>
+              } />
+
+
           </Routes>
         </BrowserRouter>
 

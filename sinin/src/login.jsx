@@ -5,7 +5,8 @@ import Signup from './sinup';
 function Login() {
     const [formes, setFormes] = useState({
         username: '',
-        password: ''
+        password: '',
+        role:''
     });
 
     const handleChange = (e) => {
@@ -17,18 +18,26 @@ function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formes);
-        axios.post('http://localhost:3000/login',formes)
-        .then(res=>{
-            if(res.data.Status==="Success"){
-                navigate('/welcome')
-                alert(res.data.Status)
-            }
-            else{
-                alert(res.data.Error)
-            }
-        })
-        .then(err=>console.log(err))
-    };
+        axios.post('http://localhost:3000/login', formes, { withCredentials: true })
+    .then(res => {
+      console.log(res);
+      if (res.data.Status === "Success") {
+        alert("Login successful!");
+
+        if (res.data.role === 'worker') {
+          navigate('/worker');
+        } else if (res.data.role === 'admin') {
+          navigate('/owner');
+        }
+      } else {
+        alert(res.data.Error);
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      alert("An error occurred during login. Please try again.");
+    });
+};
 
     return (
         <div style={{
@@ -64,7 +73,7 @@ function Login() {
                         />
                     </div>
                     <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px' }}>Password:</label>
+                        <label style={{ display: 'block', marginBottom: '5px' }}>Password</label>
                         <input
                             type="password"
                             name="password"
@@ -79,6 +88,26 @@ function Login() {
                             }}
                         />
                     </div>
+                    <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', marginBottom: '5px' }}>Role</label>
+                    <select
+                        name="role"
+                        value={formes.role}
+                        onChange={handleChange}
+                        required
+                        style={{
+                        width: '100%',
+                        padding: '8px',
+                        borderRadius: '5px',
+                        border: '1px solid #ccc'
+                        }}
+                    >
+                        <option value="">Select a password</option>
+                        <option value="admin">admin</option>
+                        <option value="worker">worker</option>
+                    </select>
+                    </div>
+
                     <button type="submit" style={{
                         width: '100%',
                         padding: '10px',
